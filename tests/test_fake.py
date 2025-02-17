@@ -2,41 +2,11 @@ from __future__ import annotations
 
 import os
 import re
-import sys
 from pathlib import Path
-
-import pytest
 
 from aerich.ddl.sqlite import SqliteDDL
 from aerich.migrate import Migrate
-from tests._utils import chdir, copy_files, run_shell
-
-
-@pytest.fixture
-def new_aerich_project(tmp_path: Path):
-    test_dir = Path(__file__).parent
-    asset_dir = test_dir / "assets" / "fake"
-    settings_py = asset_dir / "settings.py"
-    _tests_py = asset_dir / "_tests.py"
-    db_py = asset_dir / "db.py"
-    models_py = test_dir / "models.py"
-    models_second_py = test_dir / "models_second.py"
-    copy_files(settings_py, _tests_py, models_py, models_second_py, db_py, target_dir=tmp_path)
-    dst_dir = tmp_path / "tests"
-    dst_dir.mkdir()
-    dst_dir.joinpath("__init__.py").touch()
-    copy_files(test_dir / "_utils.py", test_dir / "indexes.py", target_dir=dst_dir)
-    if should_remove := str(tmp_path) not in sys.path:
-        sys.path.append(str(tmp_path))
-    with chdir(tmp_path):
-        run_shell("python db.py create", capture_output=False)
-        try:
-            yield
-        finally:
-            if not os.getenv("AERICH_DONT_DROP_FAKE_DB"):
-                run_shell("python db.py drop", capture_output=False)
-            if should_remove:
-                sys.path.remove(str(tmp_path))
+from tests._utils import run_shell
 
 
 def _append_field(*files: str, name="field_1") -> None:
