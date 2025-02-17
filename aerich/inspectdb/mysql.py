@@ -17,6 +17,7 @@ class InspectMySQL(Inspect):
             "text": self.text_field,
             "datetime": self.datetime_field,
             "float": self.float_field,
+            "double": self.float_field,
             "date": self.date_field,
             "time": self.time_field,
             "decimal": self.decimal_field,
