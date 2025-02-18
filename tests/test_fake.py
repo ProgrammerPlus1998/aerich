@@ -4,9 +4,7 @@ import os
 import re
 from pathlib import Path
 
-from aerich.ddl.sqlite import SqliteDDL
-from aerich.migrate import Migrate
-from tests._utils import run_shell
+from tests._utils import Dialect, run_shell
 
 
 def _append_field(*files: str, name="field_1") -> None:
@@ -18,7 +16,7 @@ def _append_field(*files: str, name="field_1") -> None:
 
 
 def test_fake(new_aerich_project):
-    if (ddl := getattr(Migrate, "ddl", None)) and isinstance(ddl, SqliteDDL):
+    if Dialect.is_sqlite():
         # TODO: go ahead if sqlite alter-column supported
         return
     output = run_shell("aerich init -t settings.TORTOISE_ORM")

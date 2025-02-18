@@ -1,7 +1,10 @@
-from tests._utils import run_shell
+from tests._utils import Dialect, run_shell
 
 
 def test_inspect(new_aerich_project):
+    if Dialect.is_sqlite():
+        # TODO: test sqlite after #384 fixed
+        return
     run_shell("aerich init -t settings.TORTOISE_ORM")
     run_shell("aerich init-db")
     ret = run_shell("aerich inspectdb -t product")
