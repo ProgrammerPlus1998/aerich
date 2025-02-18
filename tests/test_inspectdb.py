@@ -13,3 +13,5 @@ def test_inspect(new_aerich_project):
     assert "fields.DatetimeField" in ret
     assert "fields.FloatField" in ret
     assert "fields.UUIDField" in ret
+    if Dialect.is_mysql():
+        assert "db_index=True" in ret
