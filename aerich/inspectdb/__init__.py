@@ -38,7 +38,7 @@ class Column(BaseModel):
     def translate(self) -> ColumnInfoDict:
         comment = default = length = index = null = pk = ""
         if self.pk:
-            pk = "pk=True, "
+            pk = "primary_key=True, "
         else:
             if self.unique:
                 index = "unique=True, "
